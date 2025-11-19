@@ -1,0 +1,66 @@
+services:
+  # 1. BROKER MQTT (Mosquitto)
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+
+  # 2. NODE-RED
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    environment:
+      - TZ=Europe/Warsaw
+    volumes:
+      - ./nodered_data:/data
+    depends_on:
+      - mosquitto
+      - influxdb
+
+  # 3. INFLUXDB - Baza danych szeregów czasowych (historia)
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=robotics_data
+    volumes:
+      - ./influxdb_data:/var/lib/influxdb
+
+  # 4. GRAFANA - Wizualizacja
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3005:3000" # Port 3005, bo 3000 zajęty przez inną usługę
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${PASSWORD}
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+    depends_on:
+      - influxdb
+
+  # 5. SYMULATOR ROBOTA
+
+  virtual-robot:
+    image: python:3.9-slim
+    container_name: virtual-robot
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./robot_script:/app
+
+    command: sh -c "pip install asyncua paho-mqtt && python robot_sim.py"

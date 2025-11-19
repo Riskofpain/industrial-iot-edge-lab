@@ -1,0 +1,140 @@
+[
+    {
+        "id": "88fd3eae1e1d6e93",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6e6b422be2dda405",
+        "type": "mqtt in",
+        "z": "88fd3eae1e1d6e93",
+        "name": "",
+        "topic": "fabryka/robot1/dane",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "5170eea6a0af0ed5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 670,
+        "y": 180,
+        "wires": [
+            [
+                "e8d52dc37f9d69b9"
+            ]
+        ]
+    },
+    {
+        "id": "13d011595f573104",
+        "type": "debug",
+        "z": "88fd3eae1e1d6e93",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "e8d52dc37f9d69b9",
+        "type": "function",
+        "z": "88fd3eae1e1d6e93",
+        "name": "function 1",
+        "func": "\nvar value = msg.payload;\n\n\nif (typeof msg.payload === 'object' && msg.payload !== null && 'value' in msg.payload) {\n    value = msg.payload.value;\n}\n\n// Wiadomość dla InfluxDB\nmsg.payload = value; // Sama wartość (np. 45.5)\n\n msg.measurement = \"temperatura_silnika\"; \n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 340,
+        "wires": [
+            [
+                "13d011595f573104",
+                "4f581f59fffec12f"
+            ]
+        ]
+    },
+    {
+        "id": "4f581f59fffec12f",
+        "type": "influxdb out",
+        "z": "88fd3eae1e1d6e93",
+        "influxdb": "32610d1a87dee2e9",
+        "name": "",
+        "measurement": "temperatura",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1200,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "5170eea6a0af0ed5",
+        "type": "mqtt-broker",
+        "name": "fabryka/robot1/dane",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "32610d1a87dee2e9",
+        "type": "influxdb",
+        "hostname": "influxdb",
+        "port": 8086,
+        "protocol": "http",
+        "database": "robotics_data",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "url": "http://localhost:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "ca33b1acf9feac89",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
