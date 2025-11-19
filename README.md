@@ -1,4 +1,4 @@
-# Industrial IoT & Edge Computing Simulation Lab
+ Industrial IoT & Edge Computing Simulation Lab
 
 ## Project Overview
 
@@ -49,6 +49,6 @@ The primary goal of this project is to provide a hands-on demonstration of skill
 ![Grafana Dashboard](screenshots/grafana-dashboard.png)
 *Real-time telemetry visualization from the simulated industrial robot, showcasing temperature and position data over time.*
 
-![Node-RED Flow](screenshots/node-red-flow.png)
+![Node-RED Flow](screenshots/node-red.png)
 *Example Node-RED flow demonstrating data ingestion from MQTT, processing, and output to InfluxDB.*
 
