@@ -46,7 +46,9 @@ The primary goal of this project is to provide a hands-on demonstration of skill
 
 ## Screenshots
 
-![Grafana Dashboard](screenshots/grafana-dashboard.png)
+Experience real-time industrial telemetry visualization directly from the simulated robot:
+*Click the image or [this link](https://ds.naszebagna.ovh) to access the live Grafana dashboard. This demo provides a read-only view of the data pipeline.*
+[![Grafana Live Demo](screenshots/grafana-dashboard.png)](https://ds.naszebagna.ovh)
 *Real-time telemetry visualization from the simulated industrial robot, showcasing temperature and position data over time.*
 
 ![Node-RED Flow](screenshots/node-red.png)
